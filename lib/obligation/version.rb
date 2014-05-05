@@ -1,4 +1,4 @@
-class Obligation
+module Obligation
   module VERSION
     MAJOR = 0
     MINOR = 1
