@@ -32,7 +32,7 @@ module Obligation
       @mutex.synchronize { @reason }
     end
 
-    def value(timeout = 5)
+    def value(timeout = 30)
       _value(timeout)
     end
 
@@ -88,13 +88,13 @@ module Obligation
     protected
 
     def _value(timeout)
-      return nil if pending? && timeout != 0 && !@event.wait(timeout)
+      @event.wait(timeout) if pending? && timeout != 0
       @mutex.synchronize do
-        if @state == :fulfilled
-          @result
-        else
-          raise RejectedError.new "Obligation rejected due to #{@reason}.",
-                                  @reason
+        case @state
+          when :fulfilled then @result
+          when :rejected  then raise RejectedError.new \
+            "Obligation rejected due to #{@reason}.", @reason
+          else raise TimeoutError.new
         end
       end
     end
@@ -141,7 +141,12 @@ module Obligation
             raise RejectedError.new "Obligation rejected due to #{e.cause}."
           end
         end
-        @result
+
+        case @state
+          when :fulfilled then @result
+          when :rejected  then raise RejectedError.new \
+            "Obligation rejected due to #{@reason}.", @reason
+        end
       end
     end
   end
