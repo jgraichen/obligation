@@ -27,7 +27,7 @@ def my_library_method
 
 Then return the `obligation` object and use the `writer` object to fulfill it somewhere in your concurrent library code:
 
-```
+```ruby
   Thread.new do
     sleep 1
     writer.fulfill 42
@@ -39,7 +39,7 @@ end
 
 A user of your library using e.g. threads can now use it like a future object:
 
-```
+```ruby
 future = my_library_method
 
 # Dome something else...
