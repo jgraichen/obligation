@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Obligation::VERSION
   spec.authors       = ['Jan Graichen']
   spec.email         = ['jg@altimos.de']
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Support library to provide Futures and Promises for different concurrency models.}
+  spec.description   = %q{Support library to provide Futures and Promises for different concurrency models.}
   spec.homepage      = 'https://github.com/jgraichen/obligation'
   spec.license       = 'LGPLv3'
 
