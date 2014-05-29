@@ -9,3 +9,8 @@ group :test do
   gem 'rspec'
   gem 'coveralls'
 end
+
+group :development do
+  gem 'yard'
+  gem 'redcarpet', platform: :ruby
+end
