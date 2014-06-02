@@ -6,7 +6,7 @@ gemspec
 gem 'rake'
 
 group :test do
-  gem 'rspec'
+  gem 'rspec', '~> 3.0'
   gem 'coveralls'
 end
 
