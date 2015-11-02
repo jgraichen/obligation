@@ -131,11 +131,7 @@ module Obligation
       @mutex.synchronize do
         if _sync_pending?
           begin
-            if @dependencies.is_a?(Array)
-              _sync_fulfill @block.call @dependencies.map(&:value)
-            else
-              _sync_fulfill @block.call @dependencies.value
-            end
+            _sync_fulfill @block.call _resolved_dependencies
           rescue RejectedError => e
             _sync_reject e.cause
             raise RejectedError.new "Obligation rejected due to #{e.cause}."
@@ -148,6 +144,12 @@ module Obligation
             "Obligation rejected due to #{@reason}.", @reason
         end
       end
+    end
+
+    def _resolved_dependencies
+      return @dependencies.map(&:value) if @dependencies.is_a?(Array)
+
+      @dependencies.value
     end
   end
 
