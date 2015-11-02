@@ -131,7 +131,7 @@ module Obligation
       @mutex.synchronize do
         if _sync_pending?
           begin
-            _sync_fulfill @block.call _resolved_dependencies
+            _sync_fulfill _nested @block.call _resolved_dependencies
           rescue RejectedError => e
             _sync_reject e.cause
             raise RejectedError.new "Obligation rejected due to #{e.cause}."
@@ -150,6 +150,12 @@ module Obligation
       return @dependencies.map(&:value) if @dependencies.is_a?(Array)
 
       @dependencies.value
+    end
+
+    def _nested(result)
+      return result.value if result.respond_to? :value
+
+      result
     end
   end
 
