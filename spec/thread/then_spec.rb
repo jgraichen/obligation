@@ -26,6 +26,28 @@ describe Obligation do
         expect(result).to eq 1337
       end
 
+      it 'should return nested obligations' do
+        o1 = Obligation.create do |w|
+          Thread.new do
+            sleep 0.2
+            w.fulfill 42
+          end
+        end
+
+        o2 = o1.then do
+          Obligation.create do |r|
+            Thread.new do
+              sleep 0.2
+              r.fulfill 57
+            end
+          end
+        end
+
+        result = o2.value
+
+        expect(result).to eq 57
+      end
+
       it 'should inherit error on reject' do
         o1 = Obligation.create do |w|
           Thread.new do
